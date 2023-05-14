@@ -122,6 +122,13 @@ class mediawiki::jobqueue::runner {
             monthday => [ '6', '21' ],
         }
     }
+        cron { 'update_stopforumspam_cache':
+            ensure  => present,
+            command => '/srv/mediawiki/w/extensions/StopForumSpam/maintenance/updateDenyList.php --wiki metawiki',
+            user    => 'www-data',
+            minute  => '23',
+            hour    => '30',
+        }
 
     monitoring::nrpe { 'JobRunner Service':
         command => '/usr/lib/nagios/plugins/check_procs -a redisJobRunnerService -c 1:1',
